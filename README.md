@@ -12,7 +12,7 @@ composer require simoheinonen/phergie-irc-plugin-react-currency-converter:dev-ma
 return [
     'plugins' => [
         new \Phergie\Irc\Plugin\React\Command\Plugin(['prefix' => '!']), // dependency
-        new \SimoHeinonen\Phergie\Plugin\CurrencyConverter\Plugin(new \Scheb\YahooFinanceApi\ApiClientFactory::createApiClient()),
+        new \SimoHeinonen\Phergie\Plugin\CurrencyConverter\Plugin(\Scheb\YahooFinanceApi\ApiClientFactory::createApiClient()),
     ]
 ];
 ```
