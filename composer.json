@@ -1,9 +1,9 @@
 {
-    "name": "simoheinonen/phergie-irc-plugin-react-calculator",
+    "name": "simoheinonen/phergie-irc-plugin-react-currency-converter",
     "type": "library",
-    "description": "Phergie IRC bot plugin to calculate",
+    "description": "Phergie IRC bot plugin to convert currencies",
     "keywords": ["irc","phergie"],
-    "homepage": "https://github.com/simoheinonen/phergie-irc-plugin-react-calculator",
+    "homepage": "https://github.com/simoheinonen/phergie-irc-plugin-react-currency-converter",
     "license": "MIT",
     "authors": [
         {
@@ -14,11 +14,11 @@
     "require": {
         "phergie/phergie-irc-client-react": "^3.2",
         "phergie/phergie-irc-plugin-react-command": "^2.0",
-        "chriskonnertz/string-calc": "^1.0.2"
+        "scheb/yahoo-finance-api": "^1.4"
     },
     "autoload": {
         "psr-4": {
-            "SimoHeinonen\\Phergie\\Plugin\\Calculator\\": "src"
+            "SimoHeinonen\\Phergie\\Plugin\\CurrencyConverter\\": "src"
         }
     }
 }
