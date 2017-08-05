@@ -22,7 +22,7 @@ class Plugin extends AbstractPlugin
         return ['command.currency' => 'convertCurrency'];
     }
 
-    public function calculate(Event $event, EventQueue $queue)
+    public function convertCurrency(Event $event, EventQueue $queue)
     {
         $params = $event->getCustomParams();
 
