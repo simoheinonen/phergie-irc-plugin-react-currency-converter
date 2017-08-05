@@ -14,7 +14,7 @@
     "require": {
         "phergie/phergie-irc-client-react": "^3.2",
         "phergie/phergie-irc-plugin-react-command": "^2.0",
-        "scheb/yahoo-finance-api": "^1.4"
+        "scheb/yahoo-finance-api": "dev-master"
     },
     "autoload": {
         "psr-4": {
