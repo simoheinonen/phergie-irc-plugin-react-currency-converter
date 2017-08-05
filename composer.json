@@ -1,0 +1,24 @@
+{
+    "name": "simoheinonen/phergie-irc-plugin-react-calculator",
+    "type": "library",
+    "description": "Phergie IRC bot plugin to calculate",
+    "keywords": ["irc","phergie"],
+    "homepage": "https://github.com/simoheinonen/phergie-irc-plugin-react-calculator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simo Heinonen",
+            "homepage": "https://github.com/simoheinonen"
+        }
+    ],
+    "require": {
+        "phergie/phergie-irc-client-react": "^3.2",
+        "phergie/phergie-irc-plugin-react-command": "^2.0",
+        "chriskonnertz/string-calc": "^1.0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimoHeinonen\\Phergie\\Plugin\\Calculator\\": "src"
+        }
+    }
+}
