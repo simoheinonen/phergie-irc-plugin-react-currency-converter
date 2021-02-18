@@ -61,7 +61,7 @@ class Plugin extends AbstractPlugin
 
             $preMarketMsg = '';
             if ($quote->getPreMarketPrice()) {
-                $vari = $quote->getPreMarketPrice() < 0 ? '4' : '3';
+                $vari = $quote->getPreMarketChange() < 0 ? '4' : '3';
                 $preMarketMsg = sprintf(
                     ' | Before hours: %s %s%s (%s%%)%s',
                     ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getPreMarketPrice(), 3),
@@ -74,7 +74,7 @@ class Plugin extends AbstractPlugin
 
             $afterMarketMsg = '';
             if ($quote->getPostMarketPrice()) {
-                $vari = $quote->getPostMarketPrice() < 0 ? '4' : '3';
+                $vari = $quote->getPostMarketChange() < 0 ? '4' : '3';
                 $afterMarketMsg = sprintf(
                     ' | After hours: %s %s%s (%s%%)%s',
                     ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getPostMarketPrice(), 3),
