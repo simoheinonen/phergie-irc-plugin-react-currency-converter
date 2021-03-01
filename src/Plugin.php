@@ -25,73 +25,87 @@ class Plugin extends AbstractPlugin
     {
         $params = $event->getCustomParams();
 
+        $channel = $event->getSource();
         if (!isset($params[0])) {
             return;
         }
 
-        try {
-            $quote = $this->yahooFinance->getQuote($params[0]);
-            if (!$quote) {
-                return;
-            }
 
-            $currencyMap = [
-                'EUR' => '€',
-                'USD' => '$',
-            ];
+        $quotes = explode(',', $this->yahooFinance->getQuote($params[0]));
 
-            $msg = sprintf(
-                '%s (%s)',
-                $quote->getShortName(),
-                $quote->getSymbol()
-            );
-
-            $vari = $quote->getRegularMarketChange() < 0 ? '4' : '3';
-            $regularMarketMsg = sprintf(
-                ' | %s%s%s %s%s (%s%%)%s vol: %s',
-                chr(0x02),
-                ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getRegularMarketPrice(), 3),
-                chr(0x02),
-                (chr(0x03). $vari),
-                $this->formatNum(round($quote->getRegularMarketChange(), 3)),
-                round($quote->getRegularMarketChangePercent(), 3),
-                chr(0x03),
-                $this->fancyNumber($quote->getRegularMarketVolume())
-            );
-
-            $preMarketMsg = '';
-            if ($quote->getPreMarketPrice()) {
-                $vari = $quote->getPreMarketChange() < 0 ? '4' : '3';
-                $preMarketMsg = sprintf(
-                    ' | Before hours: %s %s%s (%s%%)%s',
-                    ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getPreMarketPrice(), 3),
-                    (chr(0x03). $vari),
-                    $this->formatNum(round($quote->getPreMarketChange(), 3)),
-                    round($quote->getPreMarketChangePercent(), 3),
-                    chr(0x03)
-                );
-            }
-
-            $afterMarketMsg = '';
-            if ($quote->getPostMarketPrice()) {
-                $vari = $quote->getPostMarketChange() < 0 ? '4' : '3';
-                $afterMarketMsg = sprintf(
-                    ' | After hours: %s %s%s (%s%%)%s',
-                    ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getPostMarketPrice(), 3),
-                    (chr(0x03). $vari),
-                    $this->formatNum(round($quote->getPostMarketChange(), 3)),
-                    round($quote->getPostMarketChangePercent(), 3),
-                    chr(0x03)
-                );
-            }
-
-            $mesegsg = $msg . $regularMarketMsg . $preMarketMsg . $afterMarketMsg. PHP_EOL;
-        } catch (\Exception $exception) {
+        if (empty($quotes)) {
             return;
         }
 
-        $channel = $event->getSource();
-        $queue->ircPrivmsg($channel, $mesegsg);
+        if (count($quotes) > 10) {
+            $queue->ircPrivmsg($channel, 'lopeta');
+            return;
+        }
+
+        foreach ($quotes as $q) {
+            try {
+                $quote = $this->yahooFinance->getQuote($q);
+                if (!$quote) {
+                    continue;
+                }
+
+                $currencyMap = [
+                    'EUR' => '€',
+                    'USD' => '$',
+                ];
+
+                $msg = sprintf(
+                    '%s (%s)',
+                    $quote->getShortName(),
+                    $quote->getSymbol()
+                );
+
+                $vari = $quote->getRegularMarketChange() < 0 ? '4' : '3';
+                $regularMarketMsg = sprintf(
+                    ' | %s%s%s %s%s (%s%%)%s vol: %s',
+                    chr(0x02),
+                    ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getRegularMarketPrice(), 3),
+                    chr(0x02),
+                    (chr(0x03). $vari),
+                    $this->formatNum(round($quote->getRegularMarketChange(), 3)),
+                    round($quote->getRegularMarketChangePercent(), 3),
+                    chr(0x03),
+                    $this->fancyNumber($quote->getRegularMarketVolume())
+                );
+
+                $preMarketMsg = '';
+                if ($quote->getPreMarketPrice()) {
+                    $vari = $quote->getPreMarketChange() < 0 ? '4' : '3';
+                    $preMarketMsg = sprintf(
+                        ' | Before hours: %s %s%s (%s%%)%s',
+                        ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getPreMarketPrice(), 3),
+                        (chr(0x03). $vari),
+                        $this->formatNum(round($quote->getPreMarketChange(), 3)),
+                        round($quote->getPreMarketChangePercent(), 3),
+                        chr(0x03)
+                    );
+                }
+
+                $afterMarketMsg = '';
+                if ($quote->getPostMarketPrice()) {
+                    $vari = $quote->getPostMarketChange() < 0 ? '4' : '3';
+                    $afterMarketMsg = sprintf(
+                        ' | After hours: %s %s%s (%s%%)%s',
+                        ($currencyMap[$quote->getCurrency()] ?? '') . round($quote->getPostMarketPrice(), 3),
+                        (chr(0x03). $vari),
+                        $this->formatNum(round($quote->getPostMarketChange(), 3)),
+                        round($quote->getPostMarketChangePercent(), 3),
+                        chr(0x03)
+                    );
+                }
+
+                $mesegsg = $msg . $regularMarketMsg . $preMarketMsg . $afterMarketMsg. PHP_EOL;
+            } catch (\Exception $exception) {
+                return;
+            }
+
+            $queue->ircPrivmsg($channel, $mesegsg);
+        }
     }
 
     private function fancyNumber($n){
