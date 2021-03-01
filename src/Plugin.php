@@ -30,8 +30,7 @@ class Plugin extends AbstractPlugin
             return;
         }
 
-
-        $quotes = explode(',', $this->yahooFinance->getQuote($params[0]));
+        $quotes = explode(',', $params[0]);
 
         if (empty($quotes)) {
             return;
