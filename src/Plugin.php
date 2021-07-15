@@ -18,7 +18,7 @@ class Plugin extends AbstractPlugin
 
     public function getSubscribedEvents()
     {
-        return ['command.stock' => 'stock'];
+        return ['command.stock' => 'stock', 'command.searchStock' => 'searchStock'];
     }
 
     public function stock(Event $event, EventQueue $queue)
@@ -104,6 +104,25 @@ class Plugin extends AbstractPlugin
             }
 
             $queue->ircPrivmsg($channel, $mesegsg);
+        }
+    }
+
+    public function searchStock(Event $event, EventQueue $queue)
+    {
+        $params = $event->getCustomParams();
+
+        $channel = $event->getSource();
+
+        if (!isset($params[0])) {
+            return;
+        }
+
+        $res = $this->yahooFinance->search($params[0]);
+
+        $res = array_slice($res, 0, 5);
+
+        foreach ($res as $q) {
+            $queue->ircPrivmsg($channel, $q->getName() . ' (' . $q->getSymbol() . ')');
         }
     }
 
