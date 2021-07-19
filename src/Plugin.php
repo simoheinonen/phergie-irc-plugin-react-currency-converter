@@ -18,7 +18,7 @@ class Plugin extends AbstractPlugin
 
     public function getSubscribedEvents()
     {
-        return ['command.stock' => 'stock', 'command.searchStock' => 'searchStock'];
+        return ['command.stock' => 'stock', 'command.searchstock' => 'searchStock'];
     }
 
     public function stock(Event $event, EventQueue $queue)
