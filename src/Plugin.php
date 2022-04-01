@@ -60,6 +60,14 @@ class Plugin extends AbstractPlugin
                 );
 
                 $vari = $quote->getRegularMarketChange() < 0 ? '4' : '3';
+                $round = round($quote->getRegularMarketChangePercent(), 3);
+
+                $date = new \DateTime();
+                if ($quote->getSymbol() === 'USD-AAVE' && $date->format('md') === '0401') {
+                    $vari = '4';
+                    $round = '-1000% APRILLIA :DDD';
+                }
+
                 $regularMarketMsg = sprintf(
                     ' | %s%s%s %s%s (%s%%)%s vol: %s',
                     chr(0x02),
@@ -67,7 +75,7 @@ class Plugin extends AbstractPlugin
                     chr(0x02),
                     (chr(0x03). $vari),
                     $this->formatNum(round($quote->getRegularMarketChange(), 3)),
-                    round($quote->getRegularMarketChangePercent(), 3),
+                    $round,
                     chr(0x03),
                     $this->fancyNumber($quote->getRegularMarketVolume())
                 );
