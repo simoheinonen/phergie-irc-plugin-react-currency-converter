@@ -63,7 +63,7 @@ class Plugin extends AbstractPlugin
                 $round = round($quote->getRegularMarketChangePercent(), 3);
 
                 $date = new \DateTime();
-                if ($quote->getSymbol() === 'USD-AAVE' && $date->format('md') === '0401') {
+                if ($quote->getSymbol() === 'AAVE-USD' && $date->format('md') === '0401') {
                     $vari = '4';
                     $round = '-1000% APRILLIA :DDD';
                 }
